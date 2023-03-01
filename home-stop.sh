@@ -1,3 +1,3 @@
-killall ssh
+killall autossh
 
 echo "Connections closed!"
