@@ -1,1 +1,0 @@
-ssh-keygen -o -f ~/.ssh/server_external -P "" && cat ~/.ssh/server_external.pub

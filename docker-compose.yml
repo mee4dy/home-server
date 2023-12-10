@@ -1,0 +1,39 @@
+version: '3.7'
+
+services:
+  autossh-tunnel:
+    image: jnovack/autossh:2.0
+    container_name: autossh-tunnel
+    restart: unless-stopped
+    network_mode: "host"
+    volumes:
+      - $SERVER_SSH_PRIVATE_KEY:/id_rsa:ro
+    entrypoint:
+      # 7800|888|80|443|20|21 - Aapanel
+      # 3306 - Mysql
+      # 8929|2224 - Gitlab
+      autossh
+        -M 0
+        -N
+        -o ServerAliveInterval=5
+        -o ServerAliveCountMax=1
+        -o "ExitOnForwardFailure yes"
+        -o "StrictHostKeyChecking no"
+        -t -t
+        -i /id_rsa
+
+        -R :7800:0.0.0.0:7800
+        -R :888:0.0.0.0:888
+        -R :80:0.0.0.0:80
+        -R :443:0.0.0.0:443
+        -R :20:0.0.0.0:20
+        -R :21:0.0.0.0:21
+
+        -R :3306:0.0.0.0:3306
+        -R :8929:0.0.0.0:8929
+        -R :2224:0.0.0.0:2224
+
+        $SERVER_USER@$SERVER_HOST
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
