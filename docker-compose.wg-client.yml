@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+  wg-tunnel-client:
+    image: lscr.io/linuxserver/wireguard:1.0.20210914
+    container_name: wg-tunnel-client
+    restart: unless-stopped
+    network_mode: "host"
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    volumes:
+      - ./wg-config/home-server.conf:/config/wg_confs/wg0.conf

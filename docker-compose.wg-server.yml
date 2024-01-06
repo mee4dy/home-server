@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  wg-tunnel-server:
+    image: ghcr.io/wg-easy/wg-easy:8-nightly
+    container_name: wg-tunnel-server
+    restart: unless-stopped
+    ports:
+      - 51820:51820/udp
+      - 51821:51821/tcp
+    network_mode: "host"
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    volumes:
+      - ./wg-config:/etc/wireguard
+    environment:
+      - WG_HOST=${SERVER_HOST}
+      - PASSWORD=${SERVER_WG_PASSWORD:-123qwezxc}
+      - WG_ALLOWED_IPS=${WG_ALLOWED_IPS:-0.0.0.0/0}
+      - WG_POST_UP=iptables -t nat -A PREROUTING -p tcp --match multiport --destination-ports ${SERVER_PORTS:-7800,888,80,443,20,21,3306,8929,2224} -j DNAT --to-destination 10.8.0.2; iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -p tcp -d 10.8.0.0/24 -j MASQUERADE;
+      - WG_POST_DOWN=iptables -t nat -D PREROUTING -p tcp --match multiport --destination-ports ${SERVER_PORTS:-7800,888,80,443,20,21,3306,8929,2224} -j DNAT --to-destination 10.8.0.2; iptables -t nat -D POSTROUTING -s 10.8.0.0/24 -p tcp -d 10.8.0.0/24 -j MASQUERADE;
