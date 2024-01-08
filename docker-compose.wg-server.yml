@@ -26,5 +26,5 @@ services:
       - WG_HOST=${SERVER_HOST}
       - PASSWORD=${SERVER_WG_PASSWORD:-123qwezxc}
       - WG_ALLOWED_IPS=${WG_ALLOWED_IPS:-0.0.0.0/1}
-      - WG_POST_UP=iptables -t nat -A PREROUTING -p tcp -i eth0 --match multiport --destination-ports 7800,888,80,443,20,21,3306,8929,2224 -j DNAT --to-destination 10.8.0.2;
-      - WG_POST_DOWN=iptables -t nat -D PREROUTING -p tcp -i eth0 --match multiport --destination-ports 7800,888,80,443,20,21,3306,8929,2224 -j DNAT --to-destination 10.8.0.2;
+      - WG_PRE_UP=iptables -t nat -A PREROUTING -p tcp -i eth0 --match multiport --destination-ports 7800,888,80,443,20,21,3306,8929,2224 -j DNAT --to-destination 10.8.0.2;
+      - WG_PRE_DOWN=iptables -t nat -D PREROUTING -p tcp -i eth0 --match multiport --destination-ports 7800,888,80,443,20,21,3306,8929,2224 -j DNAT --to-destination 10.8.0.2;
