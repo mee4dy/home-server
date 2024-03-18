@@ -9,18 +9,18 @@ This allows you to host your projects even on your laptop.
 `Attention! Docker and docker compose must be installed on your server in advance.`
 
 The repository contains two options for implementing traffic tunneling: 
-**1. Option** - ssh reverse tunnel. 
+**1. Method** - ssh reverse tunnel. 
 This is the simplest and most affordable option for creating a TСP tunnel.
 But it has the disadvantage of not being able to forward the client’s real IP address to server B. 
 Because of this, difficulties arise with maintaining statistics on user IP addresses or IP blocking. 
 All incoming requests in this case will have local IP 127.0.0.1.
 If this is not a problem for you, then this option is for you.
-**2. Option** - tunnel through Wireguard VPN and iptables.
+**2. Method** - tunnel through Wireguard VPN and iptables.
 The advantage is that the problem of option 1 is solved; in this option, the client’s real IP comes to server B and it is not difficult to forward it further (for example, through Nginx) to the target port of the service.
 As a bonus, you get a full-fledged VPN service, which you can use on your phone or other devices if necessary.
 There is also a convenient web interface for enabling/disabling the tunnel and creating VPN clients.
 
-## Reverse SSH Tunneling (Option 1)
+## Reverse SSH Tunneling (Method 1)
 **The external server must have openssh-server installed.**
 
 ### Step 1
@@ -45,7 +45,7 @@ Run the docker compose service to establish tunnel connections and port forwardi
 docker-compose -f docker-compose.ssh.yml up -d
 ```
 
-## Wireguard tunneling (Option 2)
+## Wireguard tunneling (Method 2)
 **iptables must be installed, you can install it with the following command: sudo apt-get install iptables**
 
 ### Step 1 (Server A and Server B)
