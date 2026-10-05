@@ -1,0 +1,20 @@
+name: home-server
+
+services:
+  tunnel:
+    image: jnovack/autossh:2.0.1
+    container_name: home-server-tunnel
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      SERVER_HOST: ${SERVER_HOST:?Set SERVER_HOST in .env}
+      SERVER_USER: ${SERVER_USER:-root}
+      PORTS: ${PORTS:?Set PORTS in .env}
+      TUNNEL_TOKEN: ${TUNNEL_TOKEN:?Set TUNNEL_TOKEN in .env}
+      AUTOSSH_GATETIME: "0"
+    volumes:
+      - ./scripts/entrypoint.sh:/entrypoint.sh:ro
+    entrypoint: ["/bin/sh", "/entrypoint.sh"]
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1

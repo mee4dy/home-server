@@ -1,3 +1,6 @@
 .env
-/ssh
-/wg-config
+.DS_Store
+*.pem
+*.key
+/ssh/
+/wg-config/
